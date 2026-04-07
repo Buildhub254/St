@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StevFX - Learn Forex Trading From Zero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #050a15; color: #e0e6ed; overflow-x: hidden; }
+        
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f0d060;
+            --neon-green: #00ff88;
+            --navy: #0a1628;
+            --navy-light: #0f2140;
+            --blue-glow: #1e90ff;
+        }
+
+        .font-orbitron { font-family: 'Orbitron', monospace; }
+        .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a1628; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d4af37, #00ff88); border-radius: 4px; }
+
+        /* Glowing text */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(212,175,55,0.5), 0 0 20px rgba(212,175,55,0.3), 0 0 40px rgba(212,175,55,0.2);
+        }
+        .glow-green { text-shadow: 0 0 10px rgba(0,255,136,0.5), 0 0 20px rgba(0,255,136,0.3); }
+        .glow-blue { text-shadow: 0 0 10px rgba(30,144,255,0.5), 0 0 20px rgba(30,144,255,0.3); }
+
+        /* Glowing buttons */
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37, #f0d060, #d4af37);
+            color: #000;
+            font-weight: 700;
+            padding: 14px 40px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(212,175,55,0.4), 0 0 40px rgba(212,175,55,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(212,175,55,0.6), 0 0 60px rgba(212,175,55,0.3), 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        .btn-outline {
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            padding: 12px 36px;
+            border-radius: 50px;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .btn-outline:hover {
+            background: rgba(212,175,55,0.1);
+            box-shadow: 0 0 20px rgba(212,175,55,0.3);
+            transform: translateY(-2px);
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* Hero canvas */
+        #heroCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Card styles */
+        .card {
+            background: linear-gradient(145deg, rgba(15,33,64,0.8), rgba(10,22,40,0.9));
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .card:hover::before { opacity: 1; }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212,175,55,0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.1);
+        }
+
+        .card-green {
+            border-color: rgba(0,255,136,0.15);
+        }
+        .card-green::before {
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+        }
+        .card-green:hover {
+            border-color: rgba(0,255,136,0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(0,255,136,0.1);
+        }
+
+        /* Navigation */
+        .nav-glass {
+            background: rgba(5,10,21,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212,175,55,0.1);
+            transition: all 0.3s;
+        }
+        .nav-glass.scrolled {
+            background: rgba(5,10,21,0.95);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        .nav-link {
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 0;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #d4af37, #00ff88);
+            transition: width 0.3s;
+        }
+        .nav-link:hover { color: #fff; }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Dashboard styles */
+        .dashboard-card {
+            background: linear-gradient(145deg, rgba(10,22,40,0.95), rgba(5,10,21,0.98));
+            border: 1px solid rgba(30,144,255,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .ticker-up { color: #00ff88; }
+        .ticker-down { color: #ff4757; }
+
+        /* Floating elements animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(3deg); }
+        }
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(-3deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes priceUp {
+            0% { color: #00ff88; }
+            100% { color: inherit; }
+        }
+        @keyframes priceDown {
+            0% { color: #ff4757; }
+            100% { color: inherit; }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-rev { animation: floatReverse 5s ease-in-out infinite; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        .animate-slide-up { animation: slideUp 0.8s ease-out forwards; }
+
+        /* FAQ */
+        .faq-item {
+            background: rgba(15,33,64,0.5);
+            border: 1px solid rgba(212,175,55,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-item.active {
+            border-color: rgba(212,175,55,0.3);
+            box-shadow: 0 0 20px rgba(212,175,55,0.1);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 16px 20px;
+        }
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* WhatsApp button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #25d366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 30px rgba(37,211,102,0.6);
+        }
+
+        /* Chart animation */
+        .chart-bar {
+            transition: height 0.5s ease;
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+        }
+
+        /* Input styles */
+        .input-field {
+            background: rgba(15,33,64,0.6);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 10px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212,175,55,0.2);
+        }
+        .input-field::placeholder { color: #6b7280; }
+
+        /* Particle effect */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #d4af37;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Grid pattern background */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Testimonial card */
+        .testimonial-card {
+            background: linear-gradient(145deg, rgba(15,33,64,0.7), rgba(10,22,40,0.8));
+            border: 1px solid rgba(212,175,55,0.1);
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: '"';
+            font-size: 80px;
+            color: rgba(212,175,55,0.15);
+            font-family: Georgia, serif;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            line-height: 1;
+        }
+
+        /* Live indicator */
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 6px #00ff88;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem !important; }
+            .hero-subtitle { font-size: 1rem !important; }
+        }
+
+        /* Counter animation */
+        .counter { font-variant-numeric: tabular-nums; }
+
+        /* Gradient border */
+        .gradient-border {
+            position: relative;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, #d4af37, #00ff88);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Social icons */
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,175,55,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .social-icon:hover {
+            background: rgba(212,175,55,0.15);
+            border-color: #d4af37;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(212,175,55,0.2);
+        }
+
+        /* News ticker */
+        .ticker-wrap {
+            overflow: hidden;
+            background: linear-gradient(90deg, #0a1628, #0f2140, #0a1628);
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            padding: 8px 0;
+        }
+        .ticker {
+            display: flex;
+            animation: ticker 30s linear infinite;
+            white-space: nowrap;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker-item {
+            margin: 0 40px;
+            font-size: 13px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Candlestick chart canvas */
+        #candlestickCanvas {
+            width: 100%;
+            height: 200px;
+        }
+        #lineChartCanvas {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+    <!-- News Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker" id="newsTicker">
+            <span class="ticker-item">📈 EUR/USD <span class="ticker-up">+0.23%</span> 1.0892</span>
+            <span class="ticker-item">📉 GBP/USD <span class="ticker-down">-0.15%</span> 1.2745</span>
+            <span class="ticker-item">🟡 XAU/USD <span class="ticker-up">+0.87%</span> 2341.50</span>
+            <span class="ticker-item">📈 USD/JPY <span class="ticker-down">-0.31%</span> 157.82</span>
+            <span class="ticker-item">📈 AUD/USD <span class="ticker-up">+0.18%</span> 0.6645</span>
+            <span class="ticker-item">📉 USD/CHF <span class="ticker-down">-0.09%</span> 0.8921</span>
+            <span class="ticker-item">📈 NZD/USD <span class="ticker-up">+0.12%</span> 0.6112</span>
+            <span class="ticker-item">🟡 BTC/USD <span class="ticker-up">+1.45%</span> 67,234</span>
+            <span class="ticker-item">📈 EUR/GBP <span class="ticker-up">+0.34%</span> 0.8547</span>
+            <span class="ticker-item">📉 EUR/JPY <span class="ticker-down">-0.08%</span> 171.92</span>
+            <span class="ticker-item">📈 EUR/USD <span class="ticker-up">+0.23%</span> 1.0892</span>
+            <span class="ticker-item">📉 GBP/USD <span class="ticker-down">-0.15%</span> 1.2745</span>
+            <span class="ticker-item">🟡 XAU/USD <span class="ticker-up">+0.87%</span> 2341.50</span>
+            <span class="ticker-item">📈 USD/JPY <span class="ticker-down">-0.31%</span> 157.82</span>
+            <span class="ticker-item">📈 AUD/USD <span class="ticker-up">+0.18%</span> 0.6645</span>
+            <span class="ticker-item">📉 USD/CHF <span class="ticker-down">-0.09%</span> 0.8921</span>
+            <span class="ticker-item">📈 NZD/USD <span class="ticker-up">+0.12%</span> 0.6112</span>
+            <span class="ticker-item">🟡 BTC/USD <span class="ticker-up">+1.45%</span> 67,234</span>
+            <span class="ticker-item">📈 EUR/GBP <span class="ticker-up">+0.34%</span> 0.8547</span>
+            <span class="ticker-item">📉 EUR/JPY <span class="ticker-down">-0.08%</span> 171.92</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-[36px] left-0 right-0 z-50" id="navbar" style="top:36px;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center">
+                        <span class="font-orbitron font-black text-black text-lg">S</span>
+                    </div>
+                    <div>
+                        <span class="font-orbitron font-bold text-xl text-white glow-text">Stev<span class="text-[#00ff88]">FX</span></span>
+                        <div class="text-[9px] font-rajdhani text-gray-500 tracking-[3px] uppercase">Forex Academy</div>
+                    </div>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-white">Home</a>
+                    <a href="#learn" class="nav-link">Learn</a>
+                    <a href="#market" class="nav-link">Market</a>
+                    <a href="#signals" class="nav-link">Signals</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                    <button class="btn-gold text-xs py-3 px-6">Get Started</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden text-white" onclick="toggleMobileMenu()">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 7h20M4 14h20M4 21h20"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl lg:hidden" id="mobileMenu">
+        <div class="flex justify-end p-6">
+            <button onclick="toggleMobileMenu()" class="text-white">
+                <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 6l16 16M6 22L22 6"/>
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col items-center space-y-6 pt-10">
+            <a href="#home" class="text-white text-xl font-rajdhani font-semibold tracking-wider" onclick="toggleMobileMenu()">Home</a>
+            <a href="#learn" class="text-gray-300 text-xl font-rajdhani font-semibold tracking-wider" onclick="toggleMobileMenu()">Learn</a>
+            <a href="#market" class="text-gray-300 text-xl font-rajdhani font-semibold tracking-wider" onclick="toggleMobileMenu()">Market</a>
+            <a href="#signals" class="text-gray-300 text-xl font-rajdhani font-semibold tracking-wider" onclick="toggleMobileMenu()">Signals</a>
+            <a href="#about" class="text-gray-300 text-xl font-rajdhani font-semibold tracking-wider" onclick="toggleMobileMenu()">About</a>
+            <a href="#contact" class="text-gray-300 text-xl font-rajdhani font-semibold tracking-wider" onclick="toggleMobileMenu()">Contact</a>
+            <button class="btn-gold mt-4">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center overflow-hidden" style="margin-top: 36px;">
+        <canvas id="heroCanvas"></canvas>
+        
+        <!-- Floating decorative elements -->
+        <div class="absolute top-20 left-10 animate-float opacity-20 hidden lg:block">
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                <circle cx="30" cy="30" r="28" stroke="#d4af37" stroke-width="2" stroke-dasharray="4 4"/>
+                <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#d4af37" font-size="24" font-weight="bold">€</text>
+            </svg>
+        </div>
+        <div class="absolute top-40 right-20 animate-float-rev opacity-20 hidden lg:block" style="animation-delay: 1s;">
+            <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+                <circle cx="25" cy="25" r="22" stroke="#00ff88" stroke-width="2" stroke-dasharray="4 4"/>
+                <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#00ff88" font-size="20" font-weight="bold">$</text>
+            </svg>
+        </div>
+        <div class="absolute bottom-40 left-20 animate-float opacity-15 hidden lg:block" style="animation-delay: 2s;">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" stroke="#1e90ff" stroke-width="2" stroke-dasharray="3 3"/>
+                <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#1e90ff" font-size="16" font-weight="bold">¥</text>
+            </svg>
+        </div>
+        <div class="absolute bottom-60 right-40 animate-float opacity-15 hidden lg:block" style="animation-delay: 0.5s;">
+            <svg width="45" height="45" viewBox="0 0 45 45" fill="none">
+                <circle cx="22.5" cy="22.5" r="20" stroke="#d4af37" stroke-width="2"/>
+                <path d="M22.5 10 L22.5 35 M15 17 L22.5 10 L30 17" stroke="#d4af37" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-0">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/10 to-green-500/10 border border-amber-500/20 rounded-full px-5 py-2 mb-6">
+                        <span class="live-dot"></span>
+                        <span class="text-sm font-rajdhani font-semibold text-gray-300 tracking-wider">LIVE MARKET DATA</span>
+                    </div>
+                    
+                    <h1 class="hero-title font-orbitron font-black text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight mb-6" style="animation: fadeIn 1s ease;">
+                        <span class="text-white">Learn</span>
+                        <span class="bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent glow-text"> Forex Trading</span>
+                        <br>
+                        <span class="text-white">From</span>
+                        <span class="text-[#00ff88] glow-green"> Zero</span>
+                        <span class="text-white">.</span>
+                    </h1>
+                    
+                    <p class="hero-subtitle text-gray-400 text-lg md:text-xl font-light max-w-lg mx-auto lg:mx-0 mb-8 font-rajdhani leading-relaxed" style="animation: slideUp 1s ease 0.3s both;">
+                        Master the world's largest financial market with StevFX. 
+                        Our comprehensive beginner-friendly platform transforms you from 
+                        a complete newbie into a confident trader.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start" style="animation: slideUp 1s ease 0.5s both;">
+                        <button class="btn-gold text-sm py-4 px-10" onclick="document.getElementById('learn').scrollIntoView()">
+                            START TRADING TODAY
+                        </button>
+                        <button class="btn-outline flex items-center justify-center gap-2" onclick="document.getElementById('learn').scrollIntoView()">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            Watch Demo
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-8 mt-10 justify-center lg:justify-start" style="animation: slideUp 1s ease 0.7s both;">
+                        <div class="text-center">
+                            <div class="font-orbitron text-2xl font-bold text-[#d4af37] counter" data-target="50000">0</div>
+                            <div class="text-xs text-gray-500 font-rajdhani tracking-wider uppercase mt-1">Students</div>
+                        </div>
+                        <div class="w-px h-10 bg-gray-700"></div>
+                        <div class="text-center">
+                            <div class="font-orbitron text-2xl font-bold text-[#00ff88] counter" data-target="95">0</div>
+                            <div class="text-xs text-gray-500 font-rajdhani tracking-wider uppercase mt-1">Success Rate %</div>
+                        </div>
+                        <div class="w-px h-10 bg-gray-700"></div>
+                        <div class="text-center">
+                            <div class="font-orbitron text-2xl font-bold text-blue-400 counter" data-target="150">0</div>
+                            <div class="text-xs text-gray-500 font-rajdhani tracking-wider uppercase mt-1">Countries</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right - Trading Dashboard Preview -->
+                <div class="hidden lg:block relative" style="animation: fadeIn 1.5s ease 0.5s both;">
+                    <!-- Main monitor frame -->
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-3 shadow-2xl" style="box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.1);">
+                            <!-- Screen -->
+                            <div class="bg-[#0a1628] rounded-xl overflow-hidden">
+                                <!-- Browser top bar -->
+                                <div class="flex items-center justify-between px-4 py-2 bg-[#0f2140]">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-400 font-rajdhani">StevFX Trader Pro™</div>
+                                    <div class="flex items-center gap-1">
+                                        <span class="live-dot"></span>
+                                        <span class="text-xs text-[#00ff88] font-rajdhani">LIVE</span>
+                                    </div>
+                                </div>
+                                <!-- Chart area -->
+                                <div class="p-3">
+                                    <canvas id="heroChart"></canvas>
+                                </div>
+                                <!-- Bottom stats -->
+                                <div class="grid grid-cols-4 gap-2 p-3 pt-0">
+                                    <div class="bg-[#0a1628] rounded p-2 text-center border border-green-500/20">
+                                        <div class="text-[10px] text-gray-500 font-rajdhani">EUR/USD</div>
+                                        <div class="text-xs font-orbitron text-[#00ff88]">1.0892</div>
+                                        <div class="text-[9px] text-[#00ff88] font-rajdhani">▲ +0.23%</div>
+                                    </div>
+                                    <div class="bg-[#0a1628] rounded p-2 text-center border border-red-500/20">
+                                        <div class="text-[10px] text-gray-500 font-rajdhani">GBP/USD</div>
+                                        <div class="text-xs font-orbitron text-[#ff4757]">1.2745</div>
+                                        <div class="text-[9px] text-[#ff4757] font-rajdhani">▼ -0.15%</div>
+                                    </div>
+                                    <div class="bg-[#0a1628] rounded p-2 text-center border border-green-500/20">
+                                        <div class="text-[10px] text-gray-500 font-rajdhani">XAU/USD</div>
+                                        <div class="text-xs font-orbitron text-[#00ff88]">2341.50</div>
+                                        <div class="text-[9px] text-[#00ff88] font-rajdhani">▲ +0.87%</div>
+                                    </div>
+                                    <div class="bg-[#0a1628] rounded p-2 text-center border border-red-500/20">
+                                        <div class="text-[10px] text-gray-500 font-rajdhani">USD/JPY</div>
+                                        <div class="text-xs font-orbitron text-[#ff4757]">157.82</div>
+                                        <div class="text-[9px] text-[#ff4757] font-rajdhani">▼ -0.31%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Floating profit card -->
+                        <div class="absolute -right-6 top-10 bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-md border border-green-500/30 rounded-xl p-4 animate-float" style="box-shadow: 0 0 30px rgba(0,255,136,0.2);">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                                    <svg width="20" height="20" fill="none" stroke="#00ff88" stroke-width="2"><path d="M5 15l7-7 4 4 8-8M5 15h8M5 15v-4"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400 font-rajdhani">Today's Profit</div>
+                                    <div class="font-orbitron font-bold text-[#00ff88] text-lg">+$2,847.50</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Floating gold card -->
+                        <div class="absolute -left-8 bottom-20 bg-gradient-to-br from-amber-500/20 to-amber-600/10 backdrop-blur-md border border-amber-500/30 rounded-xl p-4 animate-float-rev" style="box-shadow: 0 0 30px rgba(212,175,55,0.15);">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+                                    <svg width="20" height="20" fill="#d4af37" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400 font-rajdhani">Gold (XAU)</div>
+                                    <div class="font-orbitron font-bold text-[#d4af37] text-lg">$2,341.50</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom gradient -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050a15] to-transparent"></div>
+    </section>
+
+    <!-- What is Forex Section -->
+    <section id="learn" class="py-20 md:py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[#d4af37] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Start Here</span>
+                <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-4">What is <span class="text-[#d4af37]">Forex</span>?</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-rajdhani">Everything you need to know about the world's largest financial market — explained simply.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="card reveal" style="transition-delay: 0.1s;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-5">
+                        <svg width="28" height="28" fill="none" stroke="#d4af37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-3">What is Forex?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-rajdhani">Forex (Foreign Exchange) is the global market where currencies are traded. With over $7 trillion traded daily, it's the world's largest and most liquid financial market — open 24 hours a day, 5 days a week.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card card-green reveal" style="transition-delay: 0.2s;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center mb-5">
+                        <svg width="28" height="28" fill="none" stroke="#00ff88" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-3">How Trading Works</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-rajdhani">Trade currencies in pairs — buy one while selling another. When the value of the currency you bought rises relative to the one you sold, you profit. It's that simple, yet incredibly powerful.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card reveal" style="transition-delay: 0.3s;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center mb-5">
+                        <svg width="28" height="28" fill="none" stroke="#1e90ff" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="1" fill="#1e90ff"/><circle cx="15" cy="12" r="1" fill="#1e90ff"/><circle cx="7" cy="18" r="1" fill="#1e90ff"/></svg>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-3">Currency Pairs</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-rajdhani">Currencies are always traded in pairs like EUR/USD, GBP/JPY, or AUD/NZD. The first currency is the base, the second is the quote. If EUR/USD = 1.0892, €1 = $1.0892.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card card-green reveal" style="transition-delay: 0.4s;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center mb-5">
+                        <svg width="28" height="28" fill="none" stroke="#ff4757" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-3">Risk Management</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-rajdhani">The golden rule: never risk more than 1-2% of your account on a single trade. Use stop-loss orders, proper position sizing, and never trade with money you can't afford to lose.</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="card reveal" style="transition-delay: 0.5s;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-5">
+                        <svg width="28" height="28" fill="none" stroke="#d4af37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-3">Beginner Mistakes</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-rajdhani">Overtrading, ignoring risk management, trading on emotions, chasing losses, and not having a plan are the top mistakes new traders make. Learn to avoid them and you're already ahead.</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="card card-green reveal" style="transition-delay: 0.6s;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center mb-5">
+                        <svg width="28" height="28" fill="none" stroke="#00ff88" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-3">Start With Small Money</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-rajdhani">You don't need thousands to start. Open an account with as little as $50-$100. Use a micro or cent account to practice real trading with minimal risk while you build your skills and confidence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto"></div>
+
+    <!-- Why Choose StevFX -->
+    <section id="about" class="py-20 md:py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[#00ff88] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Why Us</span>
+                <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-4">Why Choose <span class="text-[#00ff88]">StevFX</span>?</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-rajdhani">We've designed everything with beginners in mind. Here's what makes StevFX the best place to start your trading journey.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card card-green gradient-border reveal" style="transition-delay: 0.1s;">
+                    <div class="text-4xl mb-4">📘</div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Easy Lessons for Beginners</h3>
+                    <p class="text-gray-400 text-sm font-rajdhani">Step-by-step lessons that start from absolute zero. No jargon, no confusing terms — just clear, simple explanations that anyone can understand.</p>
+                </div>
+                <div class="card gradient-border reveal" style="transition-delay: 0.2s;">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Live Market Updates</h3>
+                    <p class="text-gray-400 text-sm font-rajdhani">Real-time market data, analysis, and news. Stay ahead of the markets with our live feeds, economic calendar, and expert commentary.</p>
+                </div>
+                <div class="card card-green gradient-border reveal" style="transition-delay: 0.3s;">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Trading Signals</h3>
+                    <p class="text-gray-400 text-sm font-rajdhani">Get professional trading signals delivered directly to you. Entry points, take profit, and stop loss levels — backed by thorough market analysis.</p>
+                </div>
+                <div class="card gradient-border reveal" style="transition-delay: 0.4s;">
+                    <div class="text-4xl mb-4">🎬</div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Video Tutorials</h3>
+                    <p class="text-gray-400 text-sm font-rajdhani">HD video lessons taught by professional traders. Watch, learn, and repeat at your own pace. From basic concepts to advanced strategies.</p>
+                </div>
+                <div class="card card-green gradient-border reveal" style="transition-delay: 0.5s;">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Mobile-Friendly</h3>
+                    <p class="text-gray-400 text-sm font-rajdhani">Learn anywhere, anytime. Our platform is fully responsive — study on your phone, tablet, or desktop with the same premium experience.</p>
+                </div>
+                <div class="card gradient-border reveal" style="transition-delay: 0.6s;">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="font-orbitron font-bold text-lg text-white mb-2">Fast Support</h3>
+                    <p class="text-gray-400 text-sm font-rajdhani">Our dedicated support team is available 24/7. Whether you have a question about a trade or need help with your account — we're just a message away.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Dashboard -->
+    <section id="market" class="py-20 md:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1628]/50 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[#d4af37] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Live Dashboard</span>
+                <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-4">Real-Time <span class="text-[#d4af37]">Market</span> Data</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-rajdhani">Experience live market conditions. Practice reading charts and understanding price movements.</p>
+            </div>
+
+            <!-- Top currency pairs -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="dashboard-card p-4 reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="text-xs text-gray-500 font-rajdhani">EUR / USD</div>
+                            <div class="font-orbitron font-bold text-white text-lg" id="pair1">1.0892</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
+                            <svg width="20" height="20" fill="none" stroke="#00ff88" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M17 7h4v4"/></svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[#00ff88] text-sm font-rajdhani font-semibold" id="chg1">+0.23%</span>
+                        <div class="flex-1 h-1 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card p-4 reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="text-xs text-gray-500 font-rajdhani">GBP / USD</div>
+                            <div class="font-orbitron font-bold text-white text-lg" id="pair2">1.2745</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                            <svg width="20" height="20" fill="none" stroke="#ff4757" stroke-width="2"><path d="M3 7l6 6 4-4 8 8M7 17h4v-4"/></svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[#ff4757] text-sm font-rajdhani font-semibold" id="chg2">-0.15%</span>
+                        <div class="flex-1 h-1 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 rounded-full" style="width: 35%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card p-4 reveal" style="transition-delay: 0.3s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="text-xs text-gray-500 font-rajdhani">USD / JPY</div>
+                            <div class="font-orbitron font-bold text-white text-lg" id="pair3">157.82</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                            <svg width="20" height="20" fill="none" stroke="#ff4757" stroke-width="2"><path d="M3 7l6 6 4-4 8 8M7 17h4v-4"/></svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[#ff4757] text-sm font-rajdhani font-semibold" id="chg3">-0.31%</span>
+                        <div class="flex-1 h-1 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card p-4 reveal" style="transition-delay: 0.4s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="text-xs text-gray-500 font-rajdhani">Gold (XAU/USD)</div>
+                            <div class="font-orbitron font-bold text-white text-lg" id="pair4">2341.50</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                            <svg width="20" height="20" fill="#d4af37" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[#00ff88] text-sm font-rajdhani font-semibold" id="chg4">+0.87%</span>
+                        <div class="flex-1 h-1 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-amber-500 rounded-full" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chart -->
+            <div class="dashboard-card p-6 mb-6 reveal" style="transition-delay: 0.5s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="font-orbitron font-bold text-white text-lg">EUR/USD — H4 Chart</h3>
+                        <p class="text-xs text-gray-500 font-rajdhani mt-1">Candlestick · 4 Hour · Live</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="live-dot"></span>
+                        <span class="text-xs text-[#00ff88] font-rajdhani font-semibold">LIVE</span>
+                    </div>
+                </div>
+                <canvas id="mainChart" height="300"></canvas>
+                <!-- Chart indicators -->
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-800">
+                    <div class="flex gap-4">
+                        <span class="text-xs text-gray-500 font-rajdhani">SMA(20) <span class="text-blue-400">1.0865</span></span>
+                        <span class="text-xs text-gray-500 font-rajdhani">EMA(50) <span class="text-[#d4af37]">1.0842</span></span>
+                        <span class="text-xs text-gray-500 font-rajdhani">RSI(14) <span class="text-green-400">58.4</span></span>
+                    </div>
+                    <div class="text-xs font-rajdhani text-gray-500">
+                        Support: <span class="text-[#00ff88]">1.0850</span> | Resistance: <span class="text-[#ff4757]">1.0920</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary Charts Row -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="dashboard-card p-6 reveal" style="transition-delay: 0.6s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="font-orbitron font-bold text-white text-sm">XAU/USD (Gold) — H1</h3>
+                            <p class="text-xs text-gray-500 font-rajdhani">Bullish Trend</p>
+                        </div>
+                        <span class="text-xs text-[#00ff88] font-rajdhani font-semibold bg-green-500/10 px-3 py-1 rounded-full">▲ BUY</span>
+                    </div>
+                    <canvas id="goldChart" height="150"></canvas>
+                </div>
+                <div class="dashboard-card p-6 reveal" style="transition-delay: 0.7s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="font-orbitron font-bold text-white text-sm">GBP/USD — H1</h3>
+                            <p class="text-xs text-gray-500 font-rajdhani">Bearish Pressure</p>
+                        </div>
+                        <span class="text-xs text-[#ff4757] font-rajdhani font-semibold bg-red-500/10 px-3 py-1 rounded-full">▼ SELL</span>
+                    </div>
+                    <canvas id="gbpChart" height="150"></canvas>
+                </div>
+            </div>
+
+            <!-- Account Stats -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+                <div class="bg-gradient-to-br from-[#0a1628] to-[#0f2140] border border-[#00ff88]/20 rounded-xl p-5 text-center reveal" style="transition-delay: 0.6s;">
+                    <div class="text-xs text-gray-500 font-rajdhani tracking-wider mb-2">Total Equity</div>
+                    <div class="font-orbitron font-bold text-[#00ff88] text-2xl">$12,847.50</div>
+                    <div class="text-xs text-[#00ff88] font-rajdhani mt-1">+$2,847.50</div>
+                </div>
+                <div class="bg-gradient-to-br from-[#0a1628] to-[#0f2140] border border-[#d4af37]/20 rounded-xl p-5 text-center reveal" style="transition-delay: 0.7s;">
+                    <div class="text-xs text-gray-500 font-rajdhani tracking-wider mb-2">Open Positions</div>
+                    <div class="font-orbitron font-bold text-[#d4af37] text-2xl">3</div>
+                    <div class="text-xs text-gray-400 font-rajdhani mt-1">2 Buy, 1 Sell</div>
+                </div>
+                <div class="bg-gradient-to-br from-[#0a1628] to-[#0f2140] border border-blue-500/20 rounded-xl p-5 text-center reveal" style="transition-delay: 0.8s;">
+                    <div class="text-xs text-gray-500 font-rajdhani tracking-wider mb-2">Win Rate</div>
+                    <div class="font-orbitron font-bold text-blue-400 text-2xl">72.4%</div>
+                    <div class="text-xs text-gray-400 font-rajdhani mt-1">18/25 Trades</div>
+                </div>
+                <div class="bg-gradient-to-br from-[#0a1628] to-[#0f2140] border border-amber-500/20 rounded-xl p-5 text-center reveal" style="transition-delay: 0.9s;">
+                    <div class="text-xs text-gray-500 font-rajdhani tracking-wider mb-2">Risk/Reward</div>
+                    <div class="font-orbitron font-bold text-amber-400 text-2xl">1:2.3</div>
+                    <div class="text-xs text-gray-400 font-rajdhani mt-1">Avg Profit $230</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 md:py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[#d4af37] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Success Stories</span>
+                <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-4">What Our <span class="text-[#d4af37]">Traders</span> Say</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-rajdhani">Real stories from real beginners who transformed their trading knowledge with StevFX.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="testimonial-card reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-center gap-3 mb-4 mt-8">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-orbitron font-bold text-black text-lg">A</div>
+                        <div>
+                            <div class="font-semibold text-white">Ahmad Razali</div>
+                            <div class="text-xs text-gray-500 font-rajdhani">Malaysia • Beginner Trader</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm font-rajdhani leading-relaxed">"I had zero knowledge about Forex before joining StevFX. Within 2 weeks, I understood candlesticks, support/resistance, and made my first profitable trade. The lessons are so easy to follow!"</p>
+                    <div class="flex gap-1 mt-4">
+                        <span class="text-amber-400">★★★★★</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-center gap-3 mb-4 mt-8">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center font-orbitron font-bold text-black text-lg">S</div>
+                        <div>
+                            <div class="font-semibold text-white">Sarah Mitchell</div>
+                            <div class="text-xs text-gray-500 font-rajdhani">United Kingdom • Student</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm font-rajdhani leading-relaxed">"The video tutorials are amazing! I started with just $100 using a micro account. StevFX's risk management lessons saved me from blowing my account. Now I'm consistently profitable for 3 months!"</p>
+                    <div class="flex gap-1 mt-4">
+                        <span class="text-amber-400">★★★★★</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal" style="transition-delay: 0.3s;">
+                    <div class="flex items-center gap-3 mb-4 mt-8">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center font-orbitron font-bold text-black text-lg">M</div>
+                        <div>
+                            <div class="font-semibold text-white">Miguel Torres</div>
+                            <div class="text-xs text-gray-500 font-rajdhani">Mexico • Small Business Owner</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm font-rajdhani leading-relaxed">"The trading signals are incredibly accurate. I use them alongside what I learn from the courses. It's the perfect combination. My income from trading now matches my salary!"</p>
+                    <div class="flex gap-1 mt-4">
+                        <span class="text-amber-400">★★★★★</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto"></div>
+
+    <!-- Signals Section -->
+    <section id="signals" class="py-20 md:py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[#00ff88] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Premium</span>
+                <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-4">Trading <span class="text-[#00ff88]">Signals</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-rajdhani">Get professional trade setups delivered in real-time. Entry, take profit, and stop loss — all calculated for you.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="dashboard-card p-5 reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="bg-green-500/10 text-[#00ff88] text-xs font-rajdhani font-bold px-3 py-1 rounded-full border border-green-500/30">BUY</span>
+                        <span class="text-xs text-gray-500 font-rajdhani">2 min ago</span>
+                    </div>
+                    <div class="font-orbitron font-bold text-white text-lg mb-1">EUR/USD</div>
+                    <div class="text-xs text-gray-500 font-rajdhani mb-3">H4 · Major Pair</div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Entry</span>
+                            <span class="text-[#00ff88] font-rajdhani font-semibold">1.0865</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Take Profit</span>
+                            <span class="text-[#d4af37] font-rajdhani font-semibold">1.0920</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Stop Loss</span>
+                            <span class="text-[#ff4757] font-rajdhani font-semibold">1.0835</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Risk/Reward</span>
+                            <span class="text-white font-rajdhani font-semibold">1:2.1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card p-5 reveal" style="transition-delay: 0.2s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="bg-amber-500/10 text-[#d4af37] text-xs font-rajdhani font-bold px-3 py-1 rounded-full border border-amber-500/30">BUY</span>
+                        <span class="text-xs text-gray-500 font-rajdhani">8 min ago</span>
+                    </div>
+                    <div class="font-orbitron font-bold text-white text-lg mb-1">XAU/USD</div>
+                    <div class="text-xs text-gray-500 font-rajdhani mb-3">H1 · Commodities</div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Entry</span>
+                            <span class="text-[#00ff88] font-rajdhani font-semibold">2335.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Take Profit</span>
+                            <span class="text-[#d4af37] font-rajdhani font-semibold">2360.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Stop Loss</span>
+                            <span class="text-[#ff4757] font-rajdhani font-semibold">2318.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Risk/Reward</span>
+                            <span class="text-white font-rajdhani font-semibold">1:2.9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card p-5 reveal" style="transition-delay: 0.3s;">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="bg-red-500/10 text-[#ff4757] text-xs font-rajdhani font-bold px-3 py-1 rounded-full border border-red-500/30">SELL</span>
+                        <span class="text-xs text-gray-500 font-rajdhani">15 min ago</span>
+                    </div>
+                    <div class="font-orbitron font-bold text-white text-lg mb-1">GBP/USD</div>
+                    <div class="text-xs text-gray-500 font-rajdhani mb-3">H4 · Major Pair</div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Entry</span>
+                            <span class="text-[#ff4757] font-rajdhani font-semibold">1.2765</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Take Profit</span>
+                            <span class="text-[#d4af37] font-rajdhani font-semibold">1.2680</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Stop Loss</span>
+                            <span class="text-[#00ff88] font-rajdhani font-semibold">1.2810</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-rajdhani">Risk/Reward</span>
+                            <span class="text-white font-rajdhani font-semibold">1:1.8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="bg-gradient-to-br from-[#0a1628] via-[#0f2140] to-[#0a1628] border border-[#d4af37]/20 rounded-2xl p-8 md:p-12 text-center reveal" style="box-shadow: 0 0 60px rgba(212,175,55,0.05);">
+                <h3 class="font-orbitron font-bold text-2xl md:text-3xl text-white mb-3">Get Free Trading Tips</h3>
+                <p class="text-gray-400 font-rajdhani mb-8 max-w-lg mx-auto">Subscribe to our newsletter and receive weekly market analysis, trading tips, and exclusive signals directly in your inbox.</p>
+                <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Subscribed!'; this.querySelector('button').style.background='#00ff88';">
+                    <input type="email" placeholder="Enter your email address" class="input-field flex-1" required>
+                    <button type="submit" class="btn-gold whitespace-nowrap">Subscribe</button>
+                </form>
+                <p class="text-xs text-gray-600 mt-4 font-rajdhani">No spam. Unsubscribe anytime. We respect your privacy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 md:py-28 relative">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[#d4af37] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Got Questions?</span>
+                <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-4">Frequently Asked <span class="text-[#d4af37]">Questions</span></h2>
+            </div>
+
+            <div class="space-y-3">
+                <div class="faq-item reveal" style="transition-delay: 0.1s;">
+                    <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+                        <span class="font-rajdhani font-semibold text-white text-lg">Do I need prior trading experience?</span>
+                        <span class="faq-icon text-[#d4af37] text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400 font-rajdhani leading-relaxed">Not at all! StevFX is specifically designed for complete beginners. We start from the absolute basics and progressively build your knowledge. If you can read and follow simple instructions, you can learn to trade with us.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal" style="transition-delay: 0.2s;">
+                    <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+                        <span class="font-rajdhani font-semibold text-white text-lg">How much money do I need to start?</span>
+                        <span class="faq-icon text-[#d4af37] text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400 font-rajdhani leading-relaxed">You can start with as little as $50-$100. Many brokers offer micro and cent accounts that allow you to trade with very small amounts. We recommend starting small while you're learning — there's no rush to invest large amounts right away.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal" style="transition-delay: 0.3s;">
+                    <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+                        <span class="font-rajdhani font-semibold text-white text-lg">Is Forex trading risky?</span>
+                        <span class="faq-icon text-[#d4af37] text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400 font-rajdhani leading-relaxed">Yes, Forex trading involves significant risk — you can lose money. However, with proper education, risk management, and discipline, many traders become consistently profitable. This is why we emphasize risk management above everything else.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal" style="transition-delay: 0.4s;">
+                    <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+                        <span class="font-rajdhani font-semibold text-white text-lg">Are the trading signals free?</span>
+                        <span class="faq-icon text-[#d4af37] text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400 font-rajdhani leading-relaxed">We offer both free and premium signals. Free signals are available to all newsletter subscribers. Premium subscribers get exclusive access to higher-accuracy signals with detailed analysis and trade management guidance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal" style="transition-delay: 0.5s;">
+                    <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+                        <span class="font-rajdhani font-semibold text-white text-lg">How long does it take to learn Forex?</span>
+                        <span class="faq-icon text-[#d4af37] text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400 font-rajdhani leading-relaxed">Most students at StevFX understand the basics within 2-4 weeks of consistent study. Becoming consistently profitable, however, takes practice — typically 3-6 months of demo trading followed by live trading with small amounts. Remember, this is a skill that improves over time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto"></div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="reveal">
+                    <span class="text-[#d4af37] font-rajdhani font-semibold text-sm tracking-[4px] uppercase">Get In Touch</span>
+                    <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mt-3 mb-6">Contact <span class="text-[#d4af37]">StevFX</span></h2>
+                    <p class="text-gray-400 font-rajdhani text-lg mb-8 leading-relaxed">Have questions about Forex trading or our platform? Our team is here to help you start your trading journey the right way.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-[#0f2140] border border-[#d4af37]/20 flex items-center justify-center">
+                                <svg width="20" height="20" fill="none" stroke="#d4af37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500 font-rajdhani uppercase tracking-wider">Email</div>
+                                <div class="text-white font-rajdhani">support@stevfx.com</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-[#0f2140] border border-[#00ff88]/20 flex items-center justify-center">
+                                <svg width="20" height="20" fill="#25d366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500 font-rajdhani uppercase tracking-wider">WhatsApp</div>
+                                <div class="text-white font-rajdhani">+1 (555) 123-4567</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-[#0f2140] border border-blue-500/20 flex items-center justify-center">
+                                <svg width="20" height="20" fill="none" stroke="#1e90ff" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500 font-rajdhani uppercase tracking-wider">Support Hours</div>
+                                <div class="text-white font-rajdhani">24/7 Live Support</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="reveal" style="transition-delay: 0.3s;">
+                    <form class="card space-y-5" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Message Sent!'; this.querySelector('button').style.background='linear-gradient(135deg, #00ff88, #00cc6a)'; this.querySelector('button').style.color='#000';">
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="text-xs text-gray-400 font-rajdhani uppercase tracking-wider block mb-2">First Name</label>
+                                <input type="text" class="input-field" placeholder="John" required>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 font-rajdhani uppercase tracking-wider block mb-2">Last Name</label>
+                                <input type="text" class="input-field" placeholder="Doe" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 font-rajdhani uppercase tracking-wider block mb-2">Email</label>
+                            <input type="email" class="input-field" placeholder="john@example.com" required>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 font-rajdhani uppercase tracking-wider block mb-2">Subject</label>
+                            <select class="input-field">
+                                <option>General Inquiry</option>
+                                <option>Trading Course Question</option>
+                                <option>Account Support</option>
+                                <option>Signal Subscription</option>
+                                <option>Partnership</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 font-rajdhani uppercase tracking-wider block mb-2">Message</label>
+                            <textarea class="input-field" rows="4" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-gold w-full py-4">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/50 bg-[#030810]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-5">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center">
+                            <span class="font-orbitron font-black text-black text-lg">S</span>
+                        </div>
+                        <div>
+                            <span class="font-orbitron font-bold text-xl text-white glow-text">Stev<span class="text-[#00ff88]">FX</span></span>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm font-rajdhani leading-relaxed mb-6">The world's most beginner-friendly Forex trading academy. Learn to trade with confidence.</p>
+                    <!-- Social icons -->
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="social-icon">
+                            <svg width="18" height="18" fill="#9ca3af" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg width="18" height="18" fill="#9ca3af" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg width="18" height="18" fill="#9ca3af" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg width="18" height="18" fill="#9ca3af" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg width="18" height="18" fill="#9ca3af" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-sm mb-5">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Home</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Learn Forex</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Courses</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Market News</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Trading Signals</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-sm mb-5">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Forex Glossary</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Economic Calendar</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Trading Strategies</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Risk Calculator</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Market Analysis</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-sm mb-5">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-[#d4af37] text-sm font-rajdhani transition-colors">Risk Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="border-t border-gray-800/50 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-gray-600 text-xs font-rajdhani text-center md:text-left">
+                    © 2024 StevFX. All rights reserved. Trading forex carries a high level of risk and may not be suitable for all investors. 
+                    The high degree of leverage can work against you as well as for you.
+                </p>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-xs text-gray-600 font-rajdhani">
+                        <span class="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse"></span>
+                        All Systems Operational
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/15551234567" target="_blank" class="whatsapp-btn" title="Chat on WhatsApp">
+        <svg width="30" height="30" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Back to top -->
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-32 right-8 w-12 h-12 rounded-full bg-[#0f2140] border border-[#d4af37]/20 text-[#d4af37] flex items-center justify-center opacity-0 transition-all duration-300 z-50 hover:bg-[#d4af37]/10 hover:border-[#d4af37]/40" style="pointer-events:none;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15l7-7 7 7"/></svg>
+    </button>
+
+    <script>
+        // Mobile menu
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        // FAQ toggle
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            item.classList.toggle('active');
+        }
+
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+                backToTop.style.opacity = '1';
+                backToTop.style.pointerEvents = 'auto';
+            } else {
+                nav.classList.remove('scrolled');
+                backToTop.style.opacity = '0';
+                backToTop.style.pointerEvents = 'none';
+            }
+        });
+
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => observer.observe(el));
+
+        // Counter animation
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target);
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    el.textContent = target.toLocaleString() + (el.dataset.suffix || '');
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+        // === HERO CANVAS - Particle Network ===
+        const heroCanvas = document.getElementById('heroCanvas');
+        const heroCtx = heroCanvas.getContext('2d');
+        let heroParticles = [];
+        let heroMouse = { x: null, y: null };
+
+        function resizeHeroCanvas() {
+            heroCanvas.width = heroCanvas.parentElement.offsetWidth;
+            heroCanvas.height = heroCanvas.parentElement.offsetHeight;
+        }
+        resizeHeroCanvas();
+        window.addEventListener('resize', resizeHeroCanvas);
+
+        heroCanvas.addEventListener('mousemove', (e) => {
+            const rect = heroCanvas.getBoundingClientRect();
+            heroMouse.x = e.clientX - rect.left;
+            heroMouse.y = e.clientY - rect.top;
+        });
+
+        class HeroParticle {
+            constructor() {
+                this.x = Math.random() * heroCanvas.width;
+                this.y = Math.random() * heroCanvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.color = Math.random() > 0.5 ? 'rgba(212,175,55,' : 'rgba(0,255,136,';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || x > heroCanvas.width) this.speedX *= -1;
+                if (this.y < 0 || y > heroCanvas.height) this.speedY *= -1;
+            }
+            draw() {
+                heroCtx.beginPath();
+                heroCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                heroCtx.fillStyle = this.color + '0.4)';
+                heroCtx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) {
+            heroParticles.push(new HeroParticle());
+        }
+
+        function animateHeroParticles() {
+            heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+            heroParticles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            // Draw connections
+            for (let i = 0; i < heroParticles.length; i++) {
+                for (let j = i + 1; j < heroParticles.length; j++) {
+                    const dx = heroParticles[i].x - heroParticles[j].x;
+                    const dy = heroParticles[i].y - heroParticles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        heroCtx.beginPath();
+                        heroCtx.strokeStyle = `rgba(212,175,55,${0.08 * (1 - dist / 120)})`;
+                        heroCtx.lineWidth = 0.5;
+                        heroCtx.moveTo(heroParticles[i].x, heroParticles[i].y);
+                        heroCtx.lineTo(heroParticles[j].x, heroParticles[j].y);
+                        heroCtx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateHeroParticles);
+        }
+        animateHeroParticles();
+
+        // === HERO CHART - Mini animated line chart ===
+        const heroChart = document.getElementById('heroChart');
+        const heroChartCtx = heroChart.getContext('2d');
+
+        function resizeHeroChart() {
+            heroChart.width = heroChart.offsetWidth * 2;
+            heroChart.height = heroChart.offsetHeight * 2 || 160;
+        }
+        resizeHeroChart();
+        window.addEventListener('resize', resizeHeroChart);
+
+        let heroChartData = [];
+        for (let i = 0; i < 40; i++) {
+            heroChartData.push(1.0850 + (Math.random() - 0.4) * 0.008);
+        }
+
+        function animateHeroChart() {
+            const w = heroChart.width;
+            const h = heroChart.height;
+            heroChartCtx.clearRect(0, 0, w, h);
+
+            // Grid
+            for (let i = 0; i < 5; i++) {
+                heroChartCtx.strokeStyle = 'rgba(30,144,255,0.05)';
+                heroChartCtx.lineWidth = 1;
+                heroChartCtx.beginPath();
+                heroChartCtx.moveTo(0, (h/5)*i);
+                heroChartCtx.lineTo(w, (h/5)*i);
+                heroChartCtx.stroke();
+            }
+
+            // Gradient fill
+            const gradient = heroChartCtx.createLinearGradient(0, 0, 0, h);
+            gradient.addColorStop(0, 'rgba(0,255,136,0.2)');
+            gradient.addColorStop(1, 'rgba(0,255,136,0)');
+
+            heroChartCtx.beginPath();
+            const step = w / (heroChartData.length - 1);
+            for (let i = 0; i < heroChartData.length; i++) {
+                const x = i * step;
+                const y = h - ((heroChartData[i] - 1.082) / 0.01) * h;
+                if (i === 0) heroChartCtx.moveTo(x, y);
+                else heroChartCtx.lineTo(x, y);
+            }
+            const lastX = (heroChartData.length - 1) * step;
+            heroChartCtx.lineTo(lastX, h);
+            heroChartCtx.lineTo(0, h);
+            heroChartCtx.closePath();
+            heroChartCtx.fillStyle = gradient;
+            heroChartCtx.fill();
+
+            // Line
+            heroChartCtx.beginPath();
+            for (let i = 0; i < heroChartData.length; i++) {
+                const x = i * step;
+                const y = h - ((heroChartData[i] - 1.082) / 0.01) * h;
+                if (i === 0) heroChartCtx.moveTo(x, y);
+                else heroChartCtx.lineTo(x, y);
+            }
+            heroChartCtx.strokeStyle = '#00ff88';
+            heroChartCtx.lineWidth = 2;
+            heroChartCtx.shadowColor = '#00ff88';
+            heroChartCtx.shadowBlur = 10;
+            heroChartCtx.stroke();
+            heroChartCtx.shadowBlur = 0;
+
+            // Update data
+            heroChartData.shift();
+            const last = heroChartData[heroChartData.length - 1];
+            const change = (Math.random() - 0.48) * 0.002;
+            heroChartData.push(last + change);
+
+            requestAnimationFrame(animateHeroChart);
+        }
+        animateHeroChart();
+
+        // === MAIN CHART - Candlestick ===
+        const mainChart = document.getElementById('mainChart');
+        const mainCtx = mainChart.getContext('2d');
+
+        function resizeMainChart() {
+            const rect = mainChart.parentElement.getBoundingClientRect();
+            mainChart.width = rect.width * 2;
+            mainChart.height = 300;
+        }
+        resizeMainChart();
+        window.addEventListener('resize', resizeMainChart);
+
+        let candleData = [];
+        let basePrice = 1.085;
+        for (let i = 0; i < 40; i++) {
+            const open = basePrice;
+            const close = open + (Math.random() - 0.45) * 0.004;
+            const high = Math.max(open, close) + Math.random() * 0.002;
+            const low = Math.min(open, close) - Math.random() * 0.002;
+            candleData.push({ open, close, high, low });
+            basePrice = close;
+        }
+
+        function drawCandlesticks() {
+            const w = mainChart.width;
+            const h = mainChart.height;
+            mainCtx.clearRect(0, 0, w, h);
+
+            // Grid
+            for (let i = 0; i < 6; i++) {
+                mainCtx.strokeStyle = 'rgba(212,175,55,0.05)';
+                mainCtx.lineWidth = 1;
+                mainCtx.beginPath();
+                mainCtx.moveTo(0, (h/5)*i);
+                mainCtx.lineTo(w, (h/5)*i);
+                mainCtx.stroke();
+            }
+
+            const padding = 60;
+            const chartW = w - padding;
+            const chartH = h - 40;
+            const candleW = chartW / candleData.length;
+            const spacing = candleW * 0.2;
+
+            let minPrice = Math.min(...candleData.map(c => c.low));
+            let maxPrice = Math.max(...candleData.map(c => c.high));
+            const priceRange = maxPrice - minPrice;
+            minPrice -= priceRange * 0.05;
+            maxPrice += priceRange * 0.05;
+
+            function priceToY(price) {
+                return chartH - ((price - minPrice) / (maxPrice - minPrice)) * chartH;
+            }
+
+            // Price lines
+            for (let i = 0; i <= 4; i++) {
+                const price = minPrice + (maxPrice - minPrice) * (i / 4);
+                const y = priceToY(price);
+                mainCtx.strokeStyle = 'rgba(212,175,55,0.1)';
+                mainCtx.lineWidth = 1;
+                mainCtx.setLineDash([5, 5]);
+                mainCtx.beginPath();
+                mainCtx.moveTo(padding, y);
+                mainCtx.lineTo(w, y);
+                mainCtx.stroke();
+                mainCtx.setLineDash([]);
+
+                mainCtx.fillStyle = 'rgba(212,175,55,0.5)';
+                mainCtx.font = '18px Orbitron';
+                mainCtx.fillText(price.toFixed(4), 5, y + 6);
+            }
+
+            // Candles
+            candleData.forEach((candle, i) => {
+                const x = padding + i * candleW;
+                const centerX = x + candleW / 2;
+                const isGreen = candle.close >= candle.open;
+                const color = isGreen ? '#00ff88' : '#ff4757';
+                const bodyTop = priceToY(Math.max(candle.open, candle.close));
+                const bodyBottom = priceToY(Math.min(candle.open, candle.close));
+                const bodyH = Math.max(bodyBottom - bodyTop, 4);
+
+                // Wick
+                mainCtx.strokeStyle = color;
+                mainCtx.lineWidth = 2;
+                mainCtx.beginPath();
+                mainCtx.moveTo(centerX, priceToY(candle.high));
+                mainCtx.lineTo(centerX, priceToY(candle.low));
+                mainCtx.stroke();
+
+                // Body
+                mainCtx.fillStyle = color;
+                mainCtx.fillRect(centerX - spacing, bodyTop, spacing * 2, bodyH);
+
+                // Glow
+                if (i === candleData.length - 1) {
+                    mainCtx.shadowColor = color;
+                    mainCtx.shadowBlur = 15;
+                    mainCtx.fillRect(centerX - spacing, bodyTop, spacing * 2, bodyH);
+                    mainCtx.shadowBlur = 0;
+                }
+            });
+
+            // Current price line
+            const lastCandle = candleData[candleData.length - 1];
+            const lastY = priceToY(lastCandle.close);
+            mainCtx.strokeStyle = lastCandle.close >= lastCandle.open ? '#00ff88' : '#ff4757';
+            mainCtx.lineWidth = 1;
+            mainCtx.setLineDash([5, 3]);
+            mainCtx.beginPath();
+            mainCtx.moveTo(padding, lastY);
+            mainCtx.lineTo(w, lastY);
+            mainCtx.stroke();
+            mainCtx.setLineDash([]);
+
+            // Update candle data
+            setTimeout(() => {
+                candleData.shift();
+                const last = candleData[candleData.length - 1];
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                const open = last.close;
+                const close = open + direction * Math.random() * 0.003;
+                const high = Math.max(open, close) + Math.random() * 0.002;
+                const low = Math.min(open, close) - Math.random() * 0.002;
+                candleData.push({ open, close, high, low });
+                drawCandlesticks();
+            }, 500);
+        }
+        drawCandlesticks();
+
+        // === GOLD CHART - Line chart ===
+        const goldChart = document.getElementById('goldChart');
+        const goldCtx = goldChart.getContext('2d');
+        let goldData = [];
+        for (let i = 0; i < 30; i++) goldData.push(2330 + (Math.random() - 0.4) * 20);
+
+        function resizeGoldChart() {
+            goldChart.width = goldChart.offsetWidth * 2;
+            goldChart.height = 150;
+        }
+        resizeGoldChart();
+        window.addEventListener('resize', resizeGoldChart);
+
+        function animateGoldChart() {
+            const w = goldChart.width;
+            const h = goldChart.height;
+            goldCtx.clearRect(0, 0, w, h);
+
+            const grad = goldCtx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, 'rgba(212,175,55,0.15)');
+            grad.addColorStop(1, 'rgba(212,175,55,0)');
+
+            goldCtx.beginPath();
+            const step = w / (goldData.length - 1);
+            for (let i = 0; i < goldData.length; i++) {
+                const x = i * step;
+                const y = h - ((goldData[i] - 2320) / 30) * h;
+                if (i === 0) goldCtx.moveTo(x, y);
+                else goldCtx.lineTo(x, y);
+            }
+            goldCtx.lineTo((goldData.length-1)*step, h);
+            goldCtx.lineTo(0, h);
+            goldCtx.closePath();
+            goldCtx.fillStyle = grad;
+            goldCtx.fill();
+
+            goldCtx.beginPath();
+            for (let i = 0; i < goldData.length; i++) {
+                const x = i * step;
+                const y = h - ((goldData[i] - 2320) / 30) * h;
+                if (i === 0) goldCtx.moveTo(x, y);
+                else goldCtx.lineTo(x, y);
+            }
+            goldCtx.strokeStyle = '#d4af37';
+            goldCtx.lineWidth = 3;
+            goldCtx.shadowColor = '#d4af37';
+            goldCtx.shadowBlur = 8;
+            goldCtx.stroke();
+            goldCtx.shadowBlur = 0;
+
+            goldData.shift();
+            const last = goldData[goldData.length-1];
+            goldData.push(last + (Math.random() - 0.4) * 3);
+
+            requestAnimationFrame(animateGoldChart);
+        }
+        animateGoldChart();
+
+        // === GBP CHART - Line chart ===
+        const gbpChart = document.getElementById('gbpChart');
+        const gbpCtx = gbpChart.getContext('2d');
+        let gbpData = [];
+        for (let i = 0; i < 30; i++) gbpData.push(1.278 + (Math.random() - 0.6) * 0.01);
+
+        function resizeGbpChart() {
+            gbpChart.width = gbpChart.offsetWidth * 2;
+            gbpChart.height = 150;
+        }
+        resizeGbpChart();
+        window.addEventListener('resize', resizeGbpChart);
+
+        function animateGbpChart() {
+            const w = gbpChart.width;
+            const h = gbpChart.height;
+            gbpCtx.clearRect(0, 0, w, h);
+
+            const grad = gbpCtx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, 'rgba(255,71,87,0.1)');
+            grad.addColorStop(1, 'rgba(255,71,87,0)');
+
+            gbpCtx.beginPath();
+            const step = w / (gbpData.length - 1);
+            for (let i = 0; i < gbpData.length; i++) {
+                const x = i * step;
+                const y = h - ((gbpData[i] - 1.26) / 0.025) * h;
+                if (i === 0) gbpCtx.moveTo(x, y);
+                else gbpCtx.lineTo(x, y);
+            }
+            gbpCtx.lineTo((gbpData.length-1)*step, h);
+            gbpCtx.lineTo(0, h);
+            gbpCtx.closePath();
+            gbpCtx.fillStyle = grad;
+            gbpCtx.fill();
+
+            gbpCtx.beginPath();
+            for (let i = 0; i < gbpData.length; i++) {
+                const x = i * step;
+                const y = h - ((gbpData[i] - 1.26) / 0.025) * h;
+                if (i === 0) gbpCtx.moveTo(x, y);
+                else gbpCtx.lineTo(x, y);
+            }
+            gbpCtx.strokeStyle = '#ff4757';
+            gbpCtx.lineWidth = 3;
+            gbpCtx.shadowColor = '#ff4757';
+            gbpCtx.shadowBlur = 8;
+            gbpCtx.stroke();
+            gbpCtx.shadowBlur = 0;
+
+            gbpData.shift();
+            const last = gbpData[gbpData.length-1];
+            gbpData.push(last + (Math.random() - 0.6) * 0.003);
+
+            requestAnimationFrame(animateGbpChart);
+        }
+        animateGbpChart();
+
+        // === Live price updates ===
+        const pairs = [
+            { el: document.getElementById('pair1'), chg: document.getElementById('chg1'), base: 1.0892, decimals: 4, isUp: true },
+            { el: document.getElementById('pair2'), chg: document.getElementById('chg2'), base: 1.2745, decimals: 4, isUp: false },
+            { el: document.getElementById('pair3'), chg: document.getElementById('chg3'), base: 157.82, decimals: 2, isUp: false },
+            { el: document.getElementById('pair4'), chg: document.getElementById('chg4'), base: 2341.50, decimals: 2, isUp: true },
+        ];
+
+        function updatePrices() {
+            pairs.forEach(pair => {
+                const change = (Math.random() - 0.48) * 0.001;
+                pair.base += change;
+                pair.el.textContent = pair.base.toFixed(pair.decimals);
+                
+                const pctChange = (change / pair.base * 100).toFixed(2);
+                pair.chg.textContent = (pctChange >= 0 ? '+' : '') + pctChange + '%';
+                pair.chg.className = (parseFloat(pctChange) >= 0 ? 'text-[#00ff88]' : 'text-[#ff4757]') + ' text-sm font-rajdhani font-semibold';
+            });
+        }
+        setInterval(updatePrices, 3000);
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Particle mouse interaction on hero
+        heroCanvas.addEventListener('mousemove', (e) => {
+            heroParticles.forEach(p => {
+                const dx = p.x - heroMouse.x;
+                const dy = p.y - heroMouse.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 150) {
+                    p.x += dx * 0.01;
+                    p.y += dy * 0.01;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
